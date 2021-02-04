@@ -10,6 +10,7 @@ II- First things to do in every Symfony Project:
 1- Install Symfony Project : composer create-project symfony/website-skeleton project_name
 2- Install local server : composer require symfony/web-server-bundle 4.4
 3- Install Webpackencore : composer require Webpack-encore
+4- Install Textures: composer require --dev orm-fixtures
 4- install dependencies: npm install
 3- Initialisation Git : git init 
 4- Initialisation Git Flow for gestion features : git flow init 
