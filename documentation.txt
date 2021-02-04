@@ -9,7 +9,24 @@ I- General :
 II- First things to do in every Symfony Project: 
 1- Install Symfony Project : composer create-project symfony/website-skeleton project_name
 2- Install local server : composer require symfony/web-server-bundle 4.4
+3- Install Webpackencore : composer require Webpack-encore
+4- install dependencies: npm install
 3- Initialisation Git : git init 
 4- Initialisation Git Flow for gestion features : git flow init 
 5- git flow feature start ci 
+6- mkdir .github
+7- cd .github
+8- mkdir workflows
+9- cd workflows
+10- touch ci.yml
+
+11- Functional Tests : configure ci.yml
+12- install DMA : Ca permet la base de données de retourner à sa état initial pour chaque Tests: 
+composer require --dev dama/doctrine-test-bundle
+13- Update phpunit.xml.dist
+14- Test : vendor/bin/simple-phpunit
+15- Install Code sniffer (for Respect PSR-12) : composer require --dev squizlabs/php_codesniffer
+that create automatic new file phpcs.xml.dist
+
+
 
