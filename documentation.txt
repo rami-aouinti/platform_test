@@ -1,16 +1,22 @@
 I- General : 
-- We should make Functional Tests
-- Things that will be respected in every project 
+1- We should make Functional Tests
+2- Things that will be respected in every project 
         a- PSR-12
         b- SOLID Principe
-- Continious Integration
-- PlantUml
+3- Continious Integration
+4- PlantUml
+
+
+***********************************************************************************************************
+
 
 II- First things to do in every Symfony Project: 
 1- Install Symfony Project : composer create-project symfony/website-skeleton project_name
 2- Install local server : composer require symfony/web-server-bundle 4.4
 3- Install Webpackencore : composer require Webpack-encore
 4- Install Textures: composer require --dev orm-fixtures
+5- Install Faker: composer require fzaninotto/faker
+5- Install Logger : composer require psr/log
 4- install dependencies: npm install
 3- Initialisation Git : git init 
 4- Initialisation Git Flow for gestion features : git flow init 
@@ -20,6 +26,13 @@ II- First things to do in every Symfony Project:
 8- mkdir workflows
 9- cd workflows
 10- touch ci.yml
+11- add configuration composer : 
+"prepare": [
+      "php bin/console doctrine:database:drop --if-exists --force",
+      "php bin/console doctrine:database:create",
+      "php bin/console doctrine:schema:update --force",
+      "php bin/console doctrine:fixtures:load -n"
+    ],
 
 11- Functional Tests : configure ci.yml
 12- install DMA : Ca permet la base de données de retourner à sa état initial pour chaque Tests: 
@@ -29,5 +42,57 @@ composer require --dev dama/doctrine-test-bundle
 15- Install Code sniffer (for Respect PSR-12) : composer require --dev squizlabs/php_codesniffer
 that create automatic new file phpcs.xml.dist
 
+   *****************************************************************************************************
+
+
+
+III- Authentification in Symfony
+
+1- Install security feature: composer require symfony/security-bundle
+2- Create User entity : php bin/console make:user
+3- Install Swiftmailer: composer require symfony/swiftmailer-bundle
+2- Add authenticator Client : composer require knpuniversity/oauth2-client-bundle
+3- Add GoogleAuthenticator: composer require league/oauth2-google
+4- Add FacebookAuthenticator: composer require league/oauth2-facebook
+3- add to security.yml : 
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        database_users:
+            entity:
+                class: App:User
+                property: username
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: true
+            pattern: ^/
+            guard:
+                authenticator:
+                    - App\Security\LoginAuthenticator
+                    - App\Security\GoogleAuthenticator
+                    - App\Security\FacebookAuthenticator
+
+                entry_point: App\Security\LoginAuthenticator
+
+            logout:
+                path: /logout
+                target: /
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/user,  roles: ROLE_USER }
+ 
 
 

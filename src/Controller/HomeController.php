@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class HomeController
+ */
 class HomeController extends AbstractController
 {
     /**
@@ -13,6 +16,10 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('login');
+        }
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
